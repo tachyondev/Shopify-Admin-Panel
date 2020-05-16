@@ -24,7 +24,7 @@
         </a></div>
       <div class="sidebar-wrapper">
         <ul class="nav">
-          <li class="nav-item active">
+          <li class="nav-item">
             <a class="nav-link" href="./">
               <i class="material-icons">dashboard</i>
               <p>Dashboard</p>
@@ -36,25 +36,25 @@
               <p>Orders</p>
             </a>
           </li>
-          <li class="nav-item ">
+          <li class="nav-item" id="products_nav_item">
             <a class="nav-link" href="./list?type=products">
               <i class="material-icons">shopping_cart</i>
               <p>Products</p>
             </a>
           </li>
-          <li class="nav-item ">
+          <li class="nav-item " id="users_nav_item">
             <a class="nav-link" href="./list?type=users">
               <i class="material-icons">supervisor_account</i>
               <p>Users</p>
             </a>
           </li>
-          <li class="nav-item ">
+          <li class="nav-item" id="shops_nav_item">
             <a class="nav-link" href="./list?type=shops">
               <i class="material-icons">store</i>
               <p>Shop Keepers</p>
             </a>
           </li>
-          <li class="nav-item ">
+          <li class="nav-item" id="drivers_nav_item">
             <a class="nav-link" href="./list?type=drivers">
               <i class="material-icons">directions_bike</i>
               <p>Delivery Boys</p>
@@ -68,7 +68,7 @@
       <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
         <div class="container-fluid">
           <div class="navbar-wrapper">
-            <a class="navbar-brand" href="javascript:;">Dashboard</a>
+            <a class="navbar-brand" href="javascript:;" id="add_page_title">Add New Item</a>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
             <span class="sr-only">Toggle navigation</span>
@@ -105,110 +105,135 @@
       <div class="content">
         <div class="container-fluid">
           <div class="row">
-            <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="card card-stats">
-                <div class="card-header card-header-warning card-header-icon">
-                  <div class="card-icon">
-                    <i class="material-icons">supervisor_account</i>
-                  </div>
-                  <p class="card-category">Total Users</p>
-                  <h3 class="card-title" id="total_users">100</h3>
-                </div>
-                <div class="card-footer">
-                  <div class="stats">
-                    <i class="material-icons">supervisor_account</i>
-                    <a href="">View List</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="card card-stats">
-                <div class="card-header card-header-success card-header-icon">
-                  <div class="card-icon">
-                    <i class="material-icons">store</i>
-                  </div>
-                  <p class="card-category">Shop Keepers</p>
-                  <h3 class="card-title" id="total_shops">444</h3>
-                </div>
-                <div class="card-footer">
-                  <div class="stats">
-                    <i class="material-icons">store</i>
-                    <a href="">View List</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="card card-stats">
-                <div class="card-header card-header-danger card-header-icon">
-                  <div class="card-icon">
-                    <i class="material-icons">shopping_cart</i>
-                  </div>
-                  <p class="card-category">Products</p>
-                  <h3 class="card-title" id="total_products">100</h3>
-                </div>
-                <div class="card-footer">
-                  <div class="stats">
-                    <i class="material-icons">shopping_cart</i> 
-                    <a href="">View List</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="card card-stats">
-                <div class="card-header card-header-info card-header-icon">
-                  <div class="card-icon">
-                    <i class="material-icons">directions_bike</i>
-                  </div>
-                  <p class="card-category">Delivery Boys</p>
-                  <h3 class="card-title" id="total_delivery_boys">10</h3>
-                </div>
-                <div class="card-footer">
-                  <div class="stats">
-                    <i class="material-icons">directions_bike</i> 
-                    <a href="">View list</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-6 col-md-12">
+            <div class="col-md-12">
               <div class="card">
-                <div class="card-header card-header-primary">
-                  <h4 class="card-title">Latest Orders</h4>
+                <div class="card-header card-header-tabs card-header-primary">
+                  <div class="nav-tabs-navigation">
+                    <div class="nav-tabs-wrapper">
+                      <span class="nav-tabs-title">Add :</span>
+                      <ul class="nav nav-tabs" data-tabs="tabs">
+                        <li class="nav-item">
+                          <a class="nav-link active" id="addProductLink" href="#addProduct" data-toggle="tab">
+                            <i class="material-icons">shopping_cart</i> Product
+                            <div class="ripple-container"></div>
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" id="addShopLink" href="#addShop" data-toggle="tab">
+                            <i class="material-icons">store</i> Shop Keeper
+                            <div class="ripple-container"></div>
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" id="addDriverLink" href="#addDriver" data-toggle="tab">
+                            <i class="material-icons">directions_bike</i> Delivery Boy
+                            <div class="ripple-container"></div>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
-                <div class="card-body table-responsive">
-                  <table class="table table-hover">
-                    <thead class="text-warning">
-                      <th>ID</th>
-                      <th>User Id</th>
-                      <th>Total Amount</th>
-                      <th>Status</th>
-                    </thead>
-                    <tbody id="latest_orders_table_body">
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-6 col-md-12">
-              <div class="card">
-                <div class="card-header card-header-warning">
-                  <h4 class="card-title">Latest Users</h4>
-                </div>
-                <div class="card-body table-responsive">
-                  <table class="table table-hover">
-                    <thead class="text-warning">
-                      <th>ID</th>
-                      <th>Name</th>
-                      <th>Mobile Number</th>
-                      <th>Location</th>
-                    </thead>
-                    <tbody id="latest_users_table_body"></tbody>
-                  </table>
+                <div class="card-body">
+                  <div class="tab-content">
+                    <div class="tab-pane active" id="addProduct">
+                      Add Product
+                    </div>
+                    <div class="tab-pane" id="addShop">
+                        <form id="add_shop_form">
+                          <div class="row">
+                            <div class="col-md-6">
+                              <div class="form-group">
+                                <label class="bmd-label-floating">Shop Name</label>
+                                <input type="text" class="form-control" name="shop_name">
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group">
+                                <label class="bmd-label-floating">Owner's Name</label>
+                                <input type="text" class="form-control" name="shop_owners_name">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <div class="form-group">
+                                <label>Address</label>
+                                <div class="form-group">
+                                  <textarea class="form-control" rows="2" name="shops_address"></textarea>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-6">
+                              <div class="form-group">
+                                <label class="bmd-label-floating">Mobile Numers</label>
+                                <input type="mobile" class="form-control" name="shop_mobile_number">
+                              </div>
+                            </div>
+                            <div class="col-md-3">
+                              <div class="form-group">
+                                <label class="bmd-label-floating">Latitude</label>
+                                <input type="text" class="form-control" name="shop_latitude">
+                              </div>
+                            </div>
+                            <div class="col-md-3">
+                              <div class="form-group">
+                                <label class="bmd-label-floating">Longitude</label>
+                                <input type="text" class="form-control" name="shop_langitude">
+                              </div>
+                            </div>
+                          </div>
+                          <button type="button" onclick="addShop();" class="btn btn-primary pull-right">Add New Shop</button>
+                          <div class="clearfix"></div>
+                        </form>
+                    </div>
+                    <div class="tab-pane" id="addDriver">
+                      <form id="add_driver_form">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label class="bmd-label-floating">Fist Name</label>
+                              <input type="text" class="form-control" name="driver_first_name">
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label class="bmd-label-floating">Last Name</label>
+                              <input type="text" class="form-control" name="driver_last_name">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="form-group">
+                              <label>Address</label>
+                              <div class="form-group">
+                                <textarea class="form-control" rows="2" name="driver_address"></textarea>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label class="bmd-label-floating">Mobile Numers</label>
+                              <input type="mobile" class="form-control" name="driver_mobile_number">
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label class="bmd-label-floating">Bike Number</label>
+                              <input type="text" class="form-control" name="driver_bike_number">
+                            </div>
+                          </div>
+                        </div>
+                        <button type="button" onclick="addDriver();" class="btn btn-primary pull-right">Add New Driver</button>
+                        <div class="clearfix"></div>
+                      </form>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -250,18 +275,15 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
   <!-- Library for adding dinamically elements -->
   <script src="../assets/js/plugins/arrive.min.js"></script>
-  <!--  Google Maps Plugin    -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
   <!-- Chartist JS -->
   <script src="../assets/js/plugins/chartist.min.js"></script>
   <!--  Notifications Plugin    -->
   <script src="../assets/js/plugins/bootstrap-notify.js"></script>
   <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="../assets/js/material-dashboard.js?v=2.1.2" type="text/javascript"></script>
-  <!-- Material Dashboard DEMO methods, don't include it in your project! -->
-  <!-- <script src="../assets/demo/demo.js"></script> -->
-  <script src="../assets/js/custom/worker.js"></script>
-  <script>
+
+  <script src="../assets/js/custom/addWorker.js"></script>
+<script>
     $(document).ready(function() {
       $().ready(function() {
         $sidebar = $('.sidebar');
@@ -432,7 +454,6 @@
       });
     });
   </script>
-  <script>
-  </script>
 </body>
+
 </html>

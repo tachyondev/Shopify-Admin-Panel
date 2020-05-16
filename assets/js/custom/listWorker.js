@@ -1,9 +1,10 @@
-var pageTitelElement, navItem, titleTitle, subtitleTitle;
+var pageTitelElement, navItem, titleTitle, subtitleTitle, addItemButton;
 
 $(document).ready(function () {
   pageTitelElement = document.getElementById("list_page_title");
   titleTitle = document.getElementById("table_title");
   subtitleTitle = document.getElementById("table_subtitle");
+  addItemButton = document.getElementById("add_new_item_button");
   setupPage(window, document);
 });
 
@@ -28,6 +29,9 @@ function setupOrdersPage(document) {
   pageTitelElement.innerText = "Orders List";
   titleTitle.innerText = "Orders";
   subtitleTitle.innerText = "List of All the orders";
+  // addItemButton.innerText = "Add new order";
+  // addItemButton.href = "./add?type=orders";
+  addItemButton.style.visibility = "hidden";
   navItem = document.getElementById("orders_nav_item");
   navItem.classList.add("active");
   setTableHeaders(document, getTableHeaders("orders"));
@@ -38,6 +42,8 @@ function setupProductPage(document) {
   pageTitelElement.innerText = "Product List";
   titleTitle.innerText = "Products";
   subtitleTitle.innerText = "List of All the products";
+  addItemButton.innerText = "Add new Product";
+  addItemButton.href = "./add?type=product";
   navItem = document.getElementById("products_nav_item");
   navItem.classList.add("active");
   setTableHeaders(document, getTableHeaders("products"));
@@ -47,6 +53,7 @@ function setupUsersPage(document) {
   pageTitelElement.innerText = "Users List";
   titleTitle.innerText = "Users";
   subtitleTitle.innerText = "List of All the users";
+  addItemButton.style.visibility="hidden";
   navItem = document.getElementById("users_nav_item");
   navItem.classList.add("active");
   setTableHeaders(document, getTableHeaders("users"));
@@ -56,6 +63,8 @@ function setupShopsPage(document) {
   pageTitelElement.innerText = "Shop Keepers List";
   titleTitle.innerText = "Shop Keepers";
   subtitleTitle.innerText = "List of All the shop keepers";
+  addItemButton.innerText = "Add new Shop";
+  addItemButton.href = "./add?type=shop";
   navItem = document.getElementById("shops_nav_item");
   navItem.classList.add("active");
   setTableHeaders(document, getTableHeaders("shops"));
@@ -65,6 +74,8 @@ function setupDeliveryBoysPage(document) {
   pageTitelElement.innerText = "Delivery Boy's List";
   titleTitle.innerText = "Delivery Boy's";
   subtitleTitle.innerText = "List of All the delivery boy's";
+  addItemButton.innerText = "Add new Delivery Boy";
+  addItemButton.href = "./add?type=driver";
   navItem = document.getElementById("drivers_nav_item");
   navItem.classList.add("active");
   setTableHeaders(document, getTableHeaders("drivers"));
@@ -139,17 +150,18 @@ function getTableHeaders(type) {
         id: "Shop ID",
         name: "Shop Name",
         owners_name: "Owner's Name",
-        location: "Location",
+        location: "Address",
         mobile_number: "Mobile Number",
       },
     ];
   } else if (type === "drivers") {
     return [
       {
-        id: "D-Boy ID",
+        id: "Delivery Boy ID",
         name: "Name",
         mobile_number: "Mobile Number",
         bike_number: "Bike Number",
+        address:"Address"
       },
     ];
   }

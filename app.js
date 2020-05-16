@@ -10,8 +10,10 @@ app.get('/', (req, res) => {
 })
 
 app.get('/list', (req, res) => {
-    let type = req.query.type;
     res.sendFile(path.join(__dirname+'/admin/list.html'));
 })
 
+app.get('/add', (req, res) => {
+    res.sendFile(path.join(__dirname+'/admin/add.html'));
+})
 app.listen(port, "192.168.43.122", () => console.log(`Example app listening at http://localhost:${port}`))
