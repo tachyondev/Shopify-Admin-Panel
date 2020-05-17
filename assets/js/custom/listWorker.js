@@ -1,6 +1,7 @@
 var pageTitelElement, navItem, titleTitle, subtitleTitle, addItemButton;
 
 $(document).ready(function () {
+  $.LoadingOverlay('show');
   pageTitelElement = document.getElementById("list_page_title");
   titleTitle = document.getElementById("table_title");
   subtitleTitle = document.getElementById("table_subtitle");
@@ -23,6 +24,7 @@ function setupPage(window, document) {
   } else if (type === "drivers") {
     setupDeliveryBoysPage(document);
   }
+  $.LoadingOverlay('hide');
 }
 
 function setupOrdersPage(document) {

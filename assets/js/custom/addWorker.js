@@ -1,5 +1,6 @@
 let productTabElemet, shopTabElemet, driverTabElemet;
 $(document).ready(function () {
+  $.LoadingOverlay('show');
   setupPage(window, document);
 });
 
@@ -14,7 +15,6 @@ function setupPage(window, document) {
   let shopTabLinkElemet = document.getElementById("addShopLink");
   let driverTabLinkElemet = document.getElementById("addDriverLink");
 
-
   if (type === "product") {
     // Actual Tab
     productTabElemet.classList.add("active");
@@ -25,7 +25,7 @@ function setupPage(window, document) {
     shopTabLinkElemet.classList.remove("active");
     driverTabLinkElemet.classList.remove("active");
   } else if (type === "shop") {
-      // Actual Tab
+    // Actual Tab
     productTabElemet.classList.remove("active");
     shopTabElemet.classList.add("active");
     driverTabElemet.classList.remove("active");
@@ -43,14 +43,52 @@ function setupPage(window, document) {
     shopTabLinkElemet.classList.remove("active");
     driverTabLinkElemet.classList.add("active");
   }
+  $.LoadingOverlay('hide');
 }
 
 function addDriver() {
-    var data = $('#add_driver_form').serialize();
-    console.log(data);
+  var data = $("#add_driver_form").serialize();
+  console.log(data);
 }
 
 function addShop() {
-    var data = $('#add_shop_form').serialize();
-    console.log(data);
+  var data = $("#add_shop_form").serialize();
+  console.log(data);
 }
+
+// FileInput
+$(".form-file-simple .inputFileVisible").click(function () {
+  $(this).siblings(".inputFileHidden").trigger("click");
+});
+
+$(".form-file-simple .inputFileHidden").change(function () {
+  var filename = $(this).val().replace(/C:\\fakepath\\/i, "");
+  $(this).siblings(".inputFileVisible").val(filename);
+});
+
+$(
+  ".form-file-multiple .inputFileVisible, .form-file-multiple .input-group-btn"
+).click(function () {
+  $(this).parent().parent().find(".inputFileHidden").trigger("click");
+  $(this).parent().parent().addClass("is-focused");
+});
+
+$(".form-file-multiple .inputFileHidden").change(function () {
+  var names = "";
+  for (var i = 0; i < $(this).get(0).files.length; ++i) {
+    if (i < $(this).get(0).files.length - 1) {
+      names += $(this).get(0).files.item(i).name + ",";
+    } else {
+      names += $(this).get(0).files.item(i).name;
+    }
+  }
+  $(this).siblings(".input-group").find(".inputFileVisible").val(names);
+});
+
+$(".form-file-multiple .btn").on("focus", function () {
+  $(this).parent().siblings().trigger("focus");
+});
+
+$(".form-file-multiple .btn").on("focusout", function () {
+  $(this).parent().siblings().trigger("focusout");
+});

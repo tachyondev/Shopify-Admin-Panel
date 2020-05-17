@@ -1,4 +1,5 @@
 $(document).ready(function () {
+  $.LoadingOverlay('show');
   loadDashboardData(document);
 });
 
@@ -6,6 +7,7 @@ function loadDashboardData(document) {
   loadDataForCard(document);
   loadDataForTables(document, "latest_orders_table_body", loadLocalData());
   loadDataForTables(document, "latest_users_table_body", loadLocalData());
+  $.LoadingOverlay('hide');
 }
 
 function loadDataForCard(document) {

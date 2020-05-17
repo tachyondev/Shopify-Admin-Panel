@@ -137,7 +137,51 @@
                 <div class="card-body">
                   <div class="tab-content">
                     <div class="tab-pane active" id="addProduct">
-                      Add Product
+                      <form id="add_product_form">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label class="bmd-label-floating">Product Name</label>
+                              <input type="text" class="form-control" name="product_name">
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group form-file-upload form-file-multiple">
+                              <input type="file" multiple="" id="product_image_file" class="inputFileHidden">
+                              <div class="input-group">
+                                  <input type="text" class="form-control inputFileVisible" placeholder="Select Product Image">
+                                  <span class="input-group-btn">
+                                      <button type="button" class="btn btn-fab btn-round btn-primary">
+                                          <i class="material-icons">attach_file</i>
+                                      </button>
+                                  </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label class="bmd-label-floating">Offer Price</label>
+                              <input type="mobile" class="form-control" name="shop_mobile_number">
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label class="bmd-label-floating">Sell Price</label>
+                              <input type="text" class="form-control" name="shop_latitude">
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label for="exampleFormControlSelect1">Quantity Types</label>
+                              <input type="text" class="form-control" name="shop_latitude" placeholder="KG or LTR or GRAM">
+                            </div>
+                          </div>
+                        </div>
+                        <button type="button" onclick="addShop();" class="btn btn-primary pull-right">Add New Product</button>
+                        <div class="clearfix"></div>
+                      </form>
                     </div>
                     <div class="tab-pane" id="addShop">
                         <form id="add_shop_form">
@@ -281,7 +325,8 @@
   <script src="../assets/js/plugins/bootstrap-notify.js"></script>
   <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="../assets/js/material-dashboard.js?v=2.1.2" type="text/javascript"></script>
-
+  <!-- Loading UI-->
+  <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js" type="text/javascript"></script>
   <script src="../assets/js/custom/addWorker.js"></script>
 <script>
     $(document).ready(function() {
