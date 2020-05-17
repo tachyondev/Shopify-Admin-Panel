@@ -1,7 +1,7 @@
 var pageTitelElement, navItem, titleTitle, subtitleTitle, addItemButton;
 
 $(document).ready(function () {
-  $.LoadingOverlay('show');
+  $.LoadingOverlay("show");
   pageTitelElement = document.getElementById("list_page_title");
   titleTitle = document.getElementById("table_title");
   subtitleTitle = document.getElementById("table_subtitle");
@@ -24,7 +24,7 @@ function setupPage(window, document) {
   } else if (type === "drivers") {
     setupDeliveryBoysPage(document);
   }
-  $.LoadingOverlay('hide');
+  $.LoadingOverlay("hide");
 }
 
 function setupOrdersPage(document) {
@@ -36,29 +36,38 @@ function setupOrdersPage(document) {
   addItemButton.style.visibility = "hidden";
   navItem = document.getElementById("orders_nav_item");
   navItem.classList.add("active");
-  setTableHeaders(document, getTableHeaders("orders"));
-  setTableBody(document, getTableData("orders"));
+  let tableHeaders = getTableHeaders("orders");
+  let tableData = getTableData("orders");
+  setTableHeaders(document, tableHeaders);
+  setTableBody(document, tableData, tableHeaders[0].action, null);
 }
 
 function setupProductPage(document) {
   pageTitelElement.innerText = "Product List";
   titleTitle.innerText = "Products";
   subtitleTitle.innerText = "List of All the products";
-  addItemButton.innerText = "Add new Product";
+  addItemButton.innerText = "Add new product";
   addItemButton.href = "./add?type=product";
   navItem = document.getElementById("products_nav_item");
   navItem.classList.add("active");
-  setTableHeaders(document, getTableHeaders("products"));
+  let tableHeaders = getTableHeaders("products");
+  let tableData = getTableData("products");
+  setTableHeaders(document, tableHeaders);
+  setTableBody(document, tableData, tableHeaders[0].action, "Product");
 }
 
 function setupUsersPage(document) {
   pageTitelElement.innerText = "Users List";
   titleTitle.innerText = "Users";
   subtitleTitle.innerText = "List of All the users";
-  addItemButton.style.visibility="hidden";
+  addItemButton.style.visibility = "hidden";
   navItem = document.getElementById("users_nav_item");
   navItem.classList.add("active");
   setTableHeaders(document, getTableHeaders("users"));
+  let tableHeaders = getTableHeaders("users");
+  let tableData = getTableData("users");
+  setTableHeaders(document, tableHeaders);
+  setTableBody(document, tableData, tableHeaders[0].action, null);
 }
 
 function setupShopsPage(document) {
@@ -69,7 +78,10 @@ function setupShopsPage(document) {
   addItemButton.href = "./add?type=shop";
   navItem = document.getElementById("shops_nav_item");
   navItem.classList.add("active");
-  setTableHeaders(document, getTableHeaders("shops"));
+  let tableHeaders = getTableHeaders("shops");
+  let tableData = getTableData("shops");
+  setTableHeaders(document, tableHeaders);
+  setTableBody(document, tableData, tableHeaders[0].action, "Shop");
 }
 
 function setupDeliveryBoysPage(document) {
@@ -80,7 +92,10 @@ function setupDeliveryBoysPage(document) {
   addItemButton.href = "./add?type=driver";
   navItem = document.getElementById("drivers_nav_item");
   navItem.classList.add("active");
-  setTableHeaders(document, getTableHeaders("drivers"));
+  let tableHeaders = getTableHeaders("drivers");
+  let tableData = getTableData("drivers");
+  setTableHeaders(document, tableHeaders);
+  setTableBody(document, tableData, tableHeaders[0].action, "Delivery Boy");
 }
 
 function setTableHeaders(document, headers) {
@@ -99,9 +114,9 @@ function setTableHeaders(document, headers) {
   });
 }
 
-function setTableBody(document, bodyData) {
-  var tableHeaders = document.getElementById("table_body");
-  let row, column;
+function setTableBody(document, bodyData, hasAction, type) {
+  var tableBody = document.getElementById("table_body");
+  let row, column, rowCount=1;
   bodyData.forEach((element) => {
     row = document.createElement("tr");
     for (let key in element) {
@@ -111,8 +126,29 @@ function setTableBody(document, bodyData) {
         row.appendChild(column);
       }
     }
-    tableHeaders.appendChild(row);
+    if (hasAction) {
+      let action = document.createElement("td");
+      action.innerHTML = '<button type="button" class="btn btn-danger" onclick=removeClickListener("'+type+'","'+rowCount+'")>'+'Remove '+type+'</button>';
+      action.classList.add('td-actions');
+      action.classList.add('text-center');
+      row.appendChild(action);
+    }
+    rowCount++;
+    tableBody.appendChild(row);
   });
+}
+
+function removeClickListener(type, rowCount) {
+  let rowData = $('.table tr:nth-child('+ rowCount +')')[1].innerHTML.toString();
+  let rowDataArray = rowData.split("<td>").join("").split("</td>");
+  console.log(rowDataArray[0]);
+  if (type === "Product") {
+
+  }else if (type === "Shop") {
+
+  }else if (type === "Delivery Boy") {
+
+  }
 }
 
 function getTableHeaders(type) {
@@ -132,7 +168,8 @@ function getTableHeaders(type) {
         name: "Product Name",
         sell_price: "Sell Price",
         actual_price: "Actual Price",
-        image_link: "IMAGE",
+        image_link: "Product Image",
+        action: "Actions",
       },
     ];
   } else if (type === "users") {
@@ -154,6 +191,7 @@ function getTableHeaders(type) {
         owners_name: "Owner's Name",
         location: "Address",
         mobile_number: "Mobile Number",
+        action: "Actions",
       },
     ];
   } else if (type === "drivers") {
@@ -163,44 +201,44 @@ function getTableHeaders(type) {
         name: "Name",
         mobile_number: "Mobile Number",
         bike_number: "Bike Number",
-        address:"Address"
+        address: "Address",
+        action: "Actions",
       },
     ];
   }
 }
 
 function getTableData(c) {
-    return [
-        {
-          id: "1",
-          userid: "TEST One",
-          totalAmount: 100,
-          status: "Received",
-        },
-        {
-          id: "2",
-          userid: "TEST Two",
-          totalAmount: 200,
-          status: "Received",
-        },
-        {
-          id: "3",
-          userid: "TEST Three",
-          totalAmount: 100,
-          status: "Received",
-        },
-        {
-          id: "4",
-          userid: "TEST Four",
-          totalAmount: 100,
-          status: "Received",
-        },
-        {
-          id: "5",
-          userid: "TEST Five",
-          totalAmount: 100,
-          status: "Received",
-        },
-      ];
-  }
-  
+  return [
+    {
+      id: "1",
+      userid: "TEST One",
+      totalAmount: 100,
+      status: "Received",
+    },
+    {
+      id: "2",
+      userid: "TEST Two",
+      totalAmount: 200,
+      status: "Received",
+    },
+    {
+      id: "3",
+      userid: "TEST Three",
+      totalAmount: 100,
+      status: "Received",
+    },
+    {
+      id: "4",
+      userid: "TEST Four",
+      totalAmount: 100,
+      status: "Received",
+    },
+    {
+      id: "5",
+      userid: "TEST Five",
+      totalAmount: 100,
+      status: "Received",
+    },
+  ];
+}

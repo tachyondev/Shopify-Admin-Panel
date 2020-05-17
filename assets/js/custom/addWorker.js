@@ -47,13 +47,18 @@ function setupPage(window, document) {
 }
 
 function addDriver() {
-  var data = $("#add_driver_form").serialize();
-  console.log(data);
+  var driverData = $("#add_driver_form").serialize();
+  console.log(driverData);
 }
 
 function addShop() {
-  var data = $("#add_shop_form").serialize();
-  console.log(data);
+  var shopData = $("#add_shop_form").serialize();
+  console.log(shopData);
+}
+
+function addProduct() {
+  var productData = $('#add_product_form').serialize();
+  console.log(productData);
 }
 
 // FileInput

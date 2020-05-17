@@ -6,14 +6,24 @@ const port = 3000;
 app.use('/assets', express.static(__dirname + '/assets'));
 
 app.get('/', (req, res) => {
+let data =`<a href="/admin">Admin</a> <br/> <a href="/driver"> Driver</a>`;
+res.send(data);
+});
+
+app.get('/admin', (req, res) => {
     res.sendFile(path.join(__dirname+'/admin/index.html'));
-})
+});
 
-app.get('/list', (req, res) => {
+app.get('/admin/list', (req, res) => {
     res.sendFile(path.join(__dirname+'/admin/list.html'));
-})
+});
 
-app.get('/add', (req, res) => {
+app.get('/admin/add', (req, res) => {
     res.sendFile(path.join(__dirname+'/admin/add.html'));
-})
+});
+
+app.get('/driver/', (req, res) => {
+    res.sendFile(path.join(__dirname+'/driver/index.html'));
+});
+
 app.listen(port, "192.168.43.122", () => console.log(`Example app listening at http://localhost:${port}`))
