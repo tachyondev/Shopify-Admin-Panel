@@ -9,6 +9,7 @@ $(document).ready(function () {
   setupPage(window, document);
 });
 
+// local functions
 function setupPage(window, document) {
   var locationValue = window.location.toString();
   var array = locationValue.split("=");
@@ -50,10 +51,7 @@ function setupProductPage(document) {
   addItemButton.href = "./add?type=product";
   navItem = document.getElementById("products_nav_item");
   navItem.classList.add("active");
-  let tableHeaders = getTableHeaders("products");
-  let tableData = getTableData("products");
-  setTableHeaders(document, tableHeaders);
-  setTableBody(document, tableData, tableHeaders[0].action, "Product");
+  setupTable(document, "products");
 }
 
 function setupUsersPage(document) {
@@ -63,7 +61,6 @@ function setupUsersPage(document) {
   addItemButton.style.visibility = "hidden";
   navItem = document.getElementById("users_nav_item");
   navItem.classList.add("active");
-  setTableHeaders(document, getTableHeaders("users"));
   let tableHeaders = getTableHeaders("users");
   let tableData = getTableData("users");
   setTableHeaders(document, tableHeaders);
@@ -116,7 +113,7 @@ function setTableHeaders(document, headers) {
 
 function setTableBody(document, bodyData, hasAction, type) {
   var tableBody = document.getElementById("table_body");
-  let row, column, rowCount=1;
+  let row, column;
   bodyData.forEach((element) => {
     row = document.createElement("tr");
     for (let key in element) {
@@ -128,29 +125,19 @@ function setTableBody(document, bodyData, hasAction, type) {
     }
     if (hasAction) {
       let action = document.createElement("td");
-      action.innerHTML = '<button type="button" class="btn btn-danger" onclick=removeClickListener("'+type+'","'+rowCount+'")>'+'Remove '+type+'</button>';
+      action.innerHTML = '<button type="button"  id="remove_item_button" class="btn btn-danger" onclick=removeClickListener("' + type + '")>' + 'Remove ' + type + '</button>';
       action.classList.add('td-actions');
       action.classList.add('text-center');
       row.appendChild(action);
     }
-    rowCount++;
     tableBody.appendChild(row);
   });
 }
 
-function removeClickListener(type, rowCount) {
-  let rowData = $('.table tr:nth-child('+ rowCount +')')[1].innerHTML.toString();
-  let rowDataArray = rowData.split("<td>").join("").split("</td>");
-  console.log(rowDataArray[0]);
-  if (type === "Product") {
 
-  }else if (type === "Shop") {
-
-  }else if (type === "Delivery Boy") {
-
-  }
-}
-
+/**
+ * Static header for the table.
+ */
 function getTableHeaders(type) {
   if (type === "orders") {
     return [
@@ -208,37 +195,70 @@ function getTableHeaders(type) {
   }
 }
 
-function getTableData(c) {
-  return [
-    {
-      id: "1",
-      userid: "TEST One",
-      totalAmount: 100,
-      status: "Received",
-    },
-    {
-      id: "2",
-      userid: "TEST Two",
-      totalAmount: 200,
-      status: "Received",
-    },
-    {
-      id: "3",
-      userid: "TEST Three",
-      totalAmount: 100,
-      status: "Received",
-    },
-    {
-      id: "4",
-      userid: "TEST Four",
-      totalAmount: 100,
-      status: "Received",
-    },
-    {
-      id: "5",
-      userid: "TEST Five",
-      totalAmount: 100,
-      status: "Received",
-    },
-  ];
+// network calls region
+
+/**
+ * Remove item from the list. 
+ */
+function removeClickListener(forWhich) {
+  //TODO: read ID from table.
+  swal({
+    text: 'Enter the id for the ' + forWhich + ' (First column from the table)',
+    input: "number",
+    showCancelButton: true,
+  })
+    .then(inputData => {
+      if (inputData.value == 0) {
+        return;
+      }
+      let data = {
+        id: inputData.value,
+        type: forWhich,
+      };
+      return fetch(`http://localhost:3000/delete`, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(data)
+      });
+    })
+    .then(results => {
+      if (results == null) {
+        return swal("Invalid id, Please enter valid ID and try again");
+      }
+      return results.json();
+    })
+    .then(json => {
+      if (json.deleted) {
+        return swal("Deleted. Please refresh page.");
+      } else {
+        return swal("Somthing went wrong, Please try again")
+      }
+    })
+    .catch(err => {
+      if (err) {
+        swal("Oh noes!", "The AJAX request failed! Please contact Developer", "error");
+      } else {
+        swal.stopLoading();
+        swal.close();
+      }
+    });
 }
+
+
+/**
+ * Fetch data from given type.
+ */
+function setupTable(document, type) {
+  fetch(`http://localhost:3000/getTableData?type=${type}`)
+  .then(response => {return response.json()})
+  .then(data=>{
+    let tableHeaders = getTableHeaders(type);
+    let tableData = JSON.parse(data);
+    setTableHeaders(document, tableHeaders);
+    setTableBody(document, tableData, tableHeaders[0].action, "Product");
+  });
+}
+
+// regionend

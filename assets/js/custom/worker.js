@@ -4,25 +4,13 @@ $(document).ready(function () {
 });
 
 function loadDashboardData(document) {
-  loadDataForCard(document);
-  loadDataForTables(document, "latest_orders_table_body", loadLocalData());
-  loadDataForTables(document, "latest_users_table_body", loadLocalData());
+  loadCardData(document);
+  loadTabelData(document, "orders","latest_orders_table_body");
+  loadTabelData(document, "users", "latest_users_table_body");
   $.LoadingOverlay('hide');
 }
 
-function loadDataForCard(document) {
-  var totalUserElement = document.getElementById("total_users");
-  var totalShopElement = document.getElementById("total_shops");
-  var totalProductsElement = document.getElementById("total_products");
-  var totalDeliveryBoysElement = document.getElementById("total_delivery_boys");
-
-  totalUserElement.innerText = 100;
-  totalShopElement.innerText = 500;
-  totalProductsElement.innerText = 1000;
-  totalDeliveryBoysElement.innerText = 5000;
-}
-
-function loadDataForTables(document, tableRowID, tableData) {
+function setTableBody(document, tableRowID, tableData) {
   var latestOrdersTableBodyElement = document.getElementById(tableRowID);
   let row, column;
   tableData.forEach((element) => {
@@ -38,51 +26,29 @@ function loadDataForTables(document, tableRowID, tableData) {
   });
 }
 
-// function fetchDataFromServer(document) {
-//     $.ajax({
-//         method: "GET",
-//         async:false,
-//         url:"http://dummy.restapiexample.com/api/v1/employees",
-//         success: function(data){
-//             // loadDataForTables(document, "latest_orders_table_body", data.data);
-//         },
-//         error: function(error){
-//             console.log(error);
-//         }
-//     });
-// }
+/**
+ * Fetch Required Data.
+ */
+function loadTabelData(document, type, elementID) {
+  fetch(`http://localhost:3000/getTableData?type=${type}`)
+  .then(response => {return response.json()})
+  .then(data => {
+    setTableBody(document, "latest_orders_table_body", JSON.parse(data));
+  });
+}
 
-function loadLocalData() {
-  return [
-    {
-      id: "1",
-      userid: "TEST One",
-      totalAmount: 100,
-      status: "Received",
-    },
-    {
-      id: "2",
-      userid: "TEST Two",
-      totalAmount: 200,
-      status: "Received",
-    },
-    {
-      id: "3",
-      userid: "TEST Three",
-      totalAmount: 100,
-      status: "Received",
-    },
-    {
-      id: "4",
-      userid: "TEST Four",
-      totalAmount: 100,
-      status: "Received",
-    },
-    {
-      id: "5",
-      userid: "TEST Five",
-      totalAmount: 100,
-      status: "Received",
-    },
-  ];
+function loadCardData(document) {
+  fetch(`http://localhost:3000/getStats`)
+  .then(response => {return response.json()})
+  .then(data => {
+    var totalUserElement = document.getElementById("total_users");
+    var totalShopElement = document.getElementById("total_shops");
+    var totalProductsElement = document.getElementById("total_products");
+    var totalDeliveryBoysElement = document.getElementById("total_delivery_boys");
+  
+    totalUserElement.innerText = data.userCount;
+    totalShopElement.innerText = data.shopCount;
+    totalProductsElement.innerText = data.productCount;
+    totalDeliveryBoysElement.innerText = data.driverCount;
+  });
 }

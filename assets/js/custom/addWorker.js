@@ -47,18 +47,15 @@ function setupPage(window, document) {
 }
 
 function addDriver() {
-  var driverData = $("#add_driver_form").serialize();
-  console.log(driverData);
+  addIem("Driver", "#add_driver_form");
 }
 
 function addShop() {
-  var shopData = $("#add_shop_form").serialize();
-  console.log(shopData);
+  addIem("Shop", "#add_shop_form");
 }
 
 function addProduct() {
-  var productData = $('#add_product_form').serialize();
-  console.log(productData);
+  addIem("Product", "#add_product_form");
 }
 
 // FileInput
@@ -97,3 +94,46 @@ $(".form-file-multiple .btn").on("focus", function () {
 $(".form-file-multiple .btn").on("focusout", function () {
   $(this).parent().siblings().trigger("focusout");
 });
+
+// network calls region
+
+/**
+ * Add item network call.
+ */
+function addIem(type, elemntID){
+  let formData = $(elemntID).serialize();
+  let data ={
+    "type":type,
+    "formData": formData
+  };
+
+  $(elemntID).LoadingOverlay("show");
+  fetch("http://localhost:3000/add", {
+    method:"POST",
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8'
+    },
+    body:JSON.stringify(data)
+  }).then(response => {
+    if (response == null) {
+      throw null;
+    }
+    return response.json();
+  }).then(data => {
+    $(elemntID).LoadingOverlay("hide");
+    if (data.added){
+      // reset form 
+      $(elemntID)[0].reset();
+      // show success message
+      swal(`Success`, `${type} Added successfully`, "success");
+      // TODO: upload Image for Product.
+    }else {
+      // show error message
+      swal(`Error`, `Something went wrong, Plese try again`, "error");
+    }
+  }).catch(err => {
+    // show error message
+    $(elemntID).LoadingOverlay("hide");
+     swal(`Error`, `Something went wrong, Plese try again`, "error");
+  });
+}
