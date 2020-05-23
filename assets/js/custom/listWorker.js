@@ -37,10 +37,7 @@ function setupOrdersPage(document) {
   addItemButton.style.visibility = "hidden";
   navItem = document.getElementById("orders_nav_item");
   navItem.classList.add("active");
-  let tableHeaders = getTableHeaders("orders");
-  let tableData = getTableData("orders");
-  setTableHeaders(document, tableHeaders);
-  setTableBody(document, tableData, tableHeaders[0].action, null);
+  setupTable(document, "orders");
 }
 
 function setupProductPage(document) {
@@ -61,10 +58,7 @@ function setupUsersPage(document) {
   addItemButton.style.visibility = "hidden";
   navItem = document.getElementById("users_nav_item");
   navItem.classList.add("active");
-  let tableHeaders = getTableHeaders("users");
-  let tableData = getTableData("users");
-  setTableHeaders(document, tableHeaders);
-  setTableBody(document, tableData, tableHeaders[0].action, null);
+  setupTable(document, "users");
 }
 
 function setupShopsPage(document) {
@@ -75,10 +69,7 @@ function setupShopsPage(document) {
   addItemButton.href = "./add?type=shop";
   navItem = document.getElementById("shops_nav_item");
   navItem.classList.add("active");
-  let tableHeaders = getTableHeaders("shops");
-  let tableData = getTableData("shops");
-  setTableHeaders(document, tableHeaders);
-  setTableBody(document, tableData, tableHeaders[0].action, "Shop");
+  setupTable(document, "shops");
 }
 
 function setupDeliveryBoysPage(document) {
@@ -89,10 +80,7 @@ function setupDeliveryBoysPage(document) {
   addItemButton.href = "./add?type=driver";
   navItem = document.getElementById("drivers_nav_item");
   navItem.classList.add("active");
-  let tableHeaders = getTableHeaders("drivers");
-  let tableData = getTableData("drivers");
-  setTableHeaders(document, tableHeaders);
-  setTableBody(document, tableData, tableHeaders[0].action, "Delivery Boy");
+  setupTable(document, "drivers");
 }
 
 function setTableHeaders(document, headers) {
@@ -261,4 +249,4 @@ function setupTable(document, type) {
   });
 }
 
-// regionend
+// region

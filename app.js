@@ -51,6 +51,34 @@ app.post("/add", (req, res)=>{
     res.send(`{"added":true}`)
 });
 
+// get stats api
+app.get("/getStats", (req, res)=>{
+    res.send(`{"userCount":1000, "shopCount":100,"productCount":1000, "driverCount":100}`)
+});
+
+// get order for driver
+app.get("/getOrderForDriver", (req, res)=> {
+ res.send(getOrderForDriver());
+});
+
+// update order status
+
+app.post("/updateOrderStatus", (req, res) => {
+    console.log(req.body)
+res.send(`{"updated":true}`);
+});
+
+function getOrderForDriver(){
+    return `{
+        "deliveryBoyName":"Test",
+        "orderId":"ID-1234",
+        "orderStatus": "Received",
+        "orderShopAddress":"Shop Address",
+        "orderDeliveryAddress":"Delivery Address",
+        "acceptedMyMe": false
+    }`
+}
+
 function getProductData(){
     return `[
         {
