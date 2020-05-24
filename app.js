@@ -7,24 +7,28 @@ app.use(express.json())
 app.use('/assets', express.static(__dirname + '/assets'));
 
 app.get('/', (req, res) => {
-var data =`<a href="/admin">Admin</a> <br/> <a href="/driver"> Driver</a>`;
-res.send(data);
+    var data = `<a href="/admin">Admin</a> <br/> <a href="/driver"> Driver</a>`;
+    res.send(data);
 });
 
 app.get('/admin', (req, res) => {
-    res.sendFile(path.join(__dirname+'/admin/index.html'));
+    res.sendFile(path.join(__dirname + '/admin/index.html'));
 });
 
 app.get('/admin/list', (req, res) => {
-    res.sendFile(path.join(__dirname+'/admin/list.html'));
+    res.sendFile(path.join(__dirname + '/admin/list.html'));
 });
 
 app.get('/admin/add', (req, res) => {
-    res.sendFile(path.join(__dirname+'/admin/add.html'));
+    res.sendFile(path.join(__dirname + '/admin/add.html'));
 });
 
 app.get('/driver/', (req, res) => {
-    res.sendFile(path.join(__dirname+'/driver/index.html'));
+    res.sendFile(path.join(__dirname + '/driver/index.html'));
+});
+
+app.get('/shop/', (req, res) => {
+    res.sendFile(path.join(__dirname + '/shop/index.html'));
 });
 
 
@@ -35,40 +39,80 @@ app.post('/delete', (req, res) => {
 });
 
 // fetch table data api
-app.get('/getTableData', (req, res)=>{
+app.get('/getTableData', (req, res) => {
     var type = req.query.type;
-    if (type === "products"){
+    if (type === "products") {
         res.send(JSON.stringify(getProductData()));
-    }else if (type === "orders"){
-    res.send(JSON.stringify(getOrdersData()));
+    } else if (type === "orders") {
+        res.send(JSON.stringify(getOrdersData()));
     }
 });
 
 //add item api
-app.post("/add", (req, res)=>{
+app.post("/add", (req, res) => {
     var type = req.body.type;
     console.log(req.body);
     res.send(`{"added":true}`)
 });
 
 // get stats api
-app.get("/getStats", (req, res)=>{
+app.get("/getStats", (req, res) => {
     res.send(`{"userCount":1000, "shopCount":100,"productCount":1000, "driverCount":100}`)
 });
 
 // get order for driver
-app.get("/getOrderForDriver", (req, res)=> {
- res.send(getOrderForDriver());
+app.get("/getOrderForDriver", (req, res) => {
+    res.send(getOrderForDriver());
+});
+
+// get order for shopkeeper 
+app.get('/getOrderForShopKeeper', (req, res) => {
+    console.log(req.query);
+    console.log("return data:"+getOrderForShopKeeper());
+    res.send(getOrderForShopKeeper());
 });
 
 // update order status
-
 app.post("/updateOrderStatus", (req, res) => {
     console.log(req.body)
-res.send(`{"updated":true}`);
+    res.send(`{"updated":true}`);
 });
 
-function getOrderForDriver(){
+// shop deatils api
+app.get('/getShopDetails', (req, res) => {
+    console.log(req.query);
+    res.send( `{
+        "shopName":"Test Shop Name",
+        "shopOrderCount":1,
+        "orders":${getOrdersData()}
+    }`);
+});
+
+function getOrderForShopKeeper() {
+    return `{
+        "orderId":"ID-1234",
+        "shopName":"Test Shop Name",
+        "totalPrice":1000,
+        "items":${getOrderItems()}
+    }`;
+}
+
+function getOrderItems() {
+    return `[
+        {
+            "itemName":"Item Name",
+            "itemQuntity":10,
+            "itemQuntityType":"KG"
+        },
+        {
+            "itemName":"Item Name",
+            "itemQuntity":10,
+            "itemQuntityType":"KG"
+        }
+    ]`;
+}
+
+function getOrderForDriver() {
     return `{
         "deliveryBoyName":"Test",
         "orderId":"ID-1234",
@@ -76,10 +120,10 @@ function getOrderForDriver(){
         "orderShopAddress":"Shop Address",
         "orderDeliveryAddress":"Delivery Address",
         "acceptedMyMe": false
-    }`
+    }`;
 }
 
-function getProductData(){
+function getProductData() {
     return `[
         {
           "product_id": "1",
@@ -90,7 +134,7 @@ function getProductData(){
         }
       ]`;
 }
-function getOrdersData(){
+function getOrdersData() {
     return `[
         {
           "order_id": "1",

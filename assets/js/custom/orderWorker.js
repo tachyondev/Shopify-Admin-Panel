@@ -24,7 +24,7 @@ $(document).ready(function () {
             orderStatus.innerHTML = `Order Status:${data.orderStatus}`;
             orderShopAddress.innerHTML = `${data.orderShopAddress}`;
             orderDeliveryAddress.innerHTML = `${data.orderDeliveryAddress}`;
-            updateActions(document, data.orderStatus, data.acceptedMyMe);
+            updateActions(document, data.orderId, data.orderStatus, data.acceptedMyMe);
             $.LoadingOverlay("hide");
         })
         .catch(err => {
@@ -35,42 +35,60 @@ $(document).ready(function () {
 
 function updateActions(document, orderStatus, acceptedMyMe) {
     let accepteOrderButton = document.getElementById("accpet_order_button");
-    let prickOrderButton = document.getElementById("picked_order_button");
+    let pickOrderButton = document.getElementById("picked_order_button");
     let deliverOrderButton = document.getElementById("delivered_order_button");
+    accepteOrderButton.onclick = function() {
+        updateOrderStatus(orderId, 'accept');
+    }
+    pickOrderButton.onclick = function(){
+        updateOrderStatus(orderId, 'picked');
+    }
+    deliverOrderButton.onclick = function() {
+        updateOrderStatus(orderId, 'delivered');
+    }
 
     if (orderStatus === "Received") {
         console.log("first if");
         accepteOrderButton.disabled = false;
-        prickOrderButton.disabled = true;
+        pickOrderButton.disabled = true;
         deliverOrderButton.disabled = true;
     } else if(orderStatus === "Accepted" && acceptedMyMe) {
         console.log("second if");
         accepteOrderButton.disabled = true;
-        prickOrderButton.disabled = false;
+        pickOrderButton.disabled = false;
         deliverOrderButton.disabled = true;
     } else if (orderStatus === "Accepted" && !acceptedMyMe) {
         console.log("third if");
         accepteOrderButton.disabled = true;
-        prickOrderButton.disabled = true;
+        pickOrderButton.disabled = true;
         deliverOrderButton.disabled = true;
     }else if (orderStatus === "Picked" && acceptedMyMe) {
         accepteOrderButton.disabled = true;
-        prickOrderButton.disabled = true;
+        pickOrderButton.disabled = true;
         deliverOrderButton.disabled = false;
     }else if (orderStatus === "Picked" && !acceptedMyMe) {
         accepteOrderButton.disabled = true;
-        prickOrderButton.disabled = true;
+        pickOrderButton.disabled = true;
         deliverOrderButton.disabled = true;
     }else if (orderStatus === "Delivered") {
         accepteOrderButton.disabled = true;
-        prickOrderButton.disabled = true;
+        pickOrderButton.disabled = true;
         deliverOrderButton.disabled = true;
     }
 }
 
-function updateOrderStatus(status){
+function updateOrderStatus(orderId, status){
+    let statusToUpdate;
+    if (status === "accept"){
+        statusToUpdate = "Accepted By Delivery Boy";
+    }else if (status === "picked") {
+        statusToUpdate = "Picked By Delivery Boy";
+    }else if(status === "deldelivered"){
+        statusToUpdate = "Order Delivered";
+    }
     let data = {
-        "status":status
+        "orderId": orderId,
+        "status":statusToUpdate
     }
     $('#order_details_card').LoadingOverlay("show");
     fetch("http://localhost:3000/updateOrderStatus", {

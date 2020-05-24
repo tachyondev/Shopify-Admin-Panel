@@ -5,9 +5,8 @@ $(document).ready(function () {
 });
 
 function setupPage(window, document) {
-  var locationValue = window.location.toString();
-  var array = locationValue.split("=");
-  var type = array[1];
+  const urlParams = new URLSearchParams(window.location.search);
+  const type = urlParams.get('type');
   let productTabElemet = document.getElementById("addProduct");
   let shopTabElemet = document.getElementById("addShop");
   let driverTabElemet = document.getElementById("addDriver");

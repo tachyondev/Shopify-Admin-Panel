@@ -11,9 +11,8 @@ $(document).ready(function () {
 
 // local functions
 function setupPage(window, document) {
-  var locationValue = window.location.toString();
-  var array = locationValue.split("=");
-  var type = array[1];
+  const urlParams = new URLSearchParams(window.location.search);
+  const type = urlParams.get('type');
   if (type === "orders") {
     setupOrdersPage(document);
   } else if (type === "products") {
@@ -101,7 +100,8 @@ function setTableHeaders(document, headers) {
 
 function setTableBody(document, bodyData, hasAction, type) {
   var tableBody = document.getElementById("table_body");
-  let row, column;
+  let row, column, count = 0;
+  let orderIdArray = new Array();
   bodyData.forEach((element) => {
     row = document.createElement("tr");
     for (let key in element) {
@@ -109,15 +109,30 @@ function setTableBody(document, bodyData, hasAction, type) {
         column = document.createElement("td");
         column.innerHTML = element[key];
         row.appendChild(column);
+        if (key === "order_id" || key === "product_id" || key === "shop_id" || key === "driver_id") {
+          orderIdArray.push(element[key]);
+        }
       }
     }
     if (hasAction) {
       let action = document.createElement("td");
-      action.innerHTML = '<button type="button"  id="remove_item_button" class="btn btn-danger" onclick=removeClickListener("' + type + '")>' + 'Remove ' + type + '</button>';
+      let data = {
+        "id": orderIdArray[count],
+        "type": type,
+      };
+      let actionButton = document.createElement("button");
+      actionButton.classList.add("btn");
+      actionButton.classList.add("btn-danger");
+      actionButton.innerHTML = `Remove ${type}`;
+      actionButton.onclick = function () {
+        removeClickListener(data);
+      }
+      action.appendChild(actionButton);
       action.classList.add('td-actions');
       action.classList.add('text-center');
       row.appendChild(action);
     }
+    count++;
     tableBody.appendChild(row);
   });
 }
@@ -188,32 +203,23 @@ function getTableHeaders(type) {
 /**
  * Remove item from the list. 
  */
-function removeClickListener(forWhich) {
-  //TODO: read ID from table.
-  swal({
-    text: 'Enter the id for the ' + forWhich + ' (First column from the table)',
-    input: "number",
-    showCancelButton: true,
-  })
-    .then(inputData => {
-      if (inputData.value == 0) {
-        return;
-      }
-      let data = {
-        id: inputData.value,
-        type: forWhich,
-      };
-      return fetch(`http://localhost:3000/delete`, {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json;charset=utf-8'
-        },
-        body: JSON.stringify(data)
-      });
-    })
-    .then(results => {
+function removeClickListener(data) {
+  // TODO: add confimation dialog
+  console.log(data);
+  if (data.id == 0) {
+    swal("Invalid id, Please enter valid ID and try again");
+    return;
+  }
+
+  fetch(`http://localhost:3000/delete`, {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8'
+    },
+    body: JSON.stringify(data)
+  }).then(results => {
       if (results == null) {
-        return swal("Invalid id, Please enter valid ID and try again");
+        return null;
       }
       return results.json();
     })
@@ -240,13 +246,13 @@ function removeClickListener(forWhich) {
  */
 function setupTable(document, type) {
   fetch(`http://localhost:3000/getTableData?type=${type}`)
-  .then(response => {return response.json()})
-  .then(data=>{
-    let tableHeaders = getTableHeaders(type);
-    let tableData = JSON.parse(data);
-    setTableHeaders(document, tableHeaders);
-    setTableBody(document, tableData, tableHeaders[0].action, "Product");
-  });
+    .then(response => { return response.json() })
+    .then(data => {
+      let tableHeaders = getTableHeaders(type);
+      let tableData = JSON.parse(data);
+      setTableHeaders(document, tableHeaders);
+      setTableBody(document, tableData, tableHeaders[0].action, type);
+    });
 }
 
 // region
